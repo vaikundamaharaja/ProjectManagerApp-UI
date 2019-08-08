@@ -1,0 +1,108 @@
+<html>
+
+<head>
+    <title>TaskManager</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<!-- Add task form-->
+<div>
+    <form class="form-horizontal" [formGroup]="addTaskForm">
+        <!--Project Search field-->
+        <div class="form-group">
+            <label class="control-label col-sm-2 font-style" for="Task">Project:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" formControlName="project" id="project" placeholder="Enter Project" name="project">
+            </div>
+            <div class="col-sm-1">
+                <button class="btn btn-Basic">Search</button>
+            </div>
+        </div>
+        <!--Task field-->
+        <div class="form-group">
+            <label class="control-label col-sm-2 font-style" for="Task">Task:</label>
+            <div class="col-sm-5">
+                <input type="text" class="form-control" formControlName="task" id="task" placeholder="Enter Task" name="Task">
+            </div>
+        </div>
+        <!--Parent Task Check box-->
+        <div class="form-group">
+            <label class="control-label col-sm-2 chk-box" for="Task"></label>
+
+            <div class="form-check">
+                <label class="form-check-label font-style">
+                    <input type="checkbox" class="form-check-input" value="" formControlName="isParentTask">Parent Task
+                </label>
+            </div>
+        </div>
+        <!--Priority-->
+        <div class="form-group">
+            <label class="control-label col-sm-2 font-style" for="Priority">Priority:</label>
+            <div class="col-sm-2 slidecontainer">
+                0
+                <span>30</span>
+                <input type="range" min="0" max="30" value="0" formControlName="priority" class="slider" id="myRange" name="myRange" oninput="amount.value=myRange.value">
+                <output id="amount" name="amount" for="rangeInput">0</output>
+            </div>
+        </div>
+        <!--Parent task Search field-->
+        <div class="form-group">
+            <label class="control-label col-sm-2 font-style" for="ParentTask">Parent Task:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" formControlName="parentTask" id="parent-task" placeholder="Enter Project Task" name="parentTask">
+            </div>
+            <div class="col-sm-1">
+                <button class="btn btn-Basic">Search</button>
+            </div>
+        </div>
+        <!--Task Start date field-->
+        <div class="form-group">
+            <label class="control-label col-sm-2 font-style" for="StartDate">Start Date:</label>
+            <div class="col-sm-2">
+                <input type="date" class="form-control date-width" id="StartDate" formControlName="startDate" placeholder="Enter Start Date" name="StartDate">
+            </div>
+
+            <label class="control-label col-sm-1 font-style" for="Task">EndDate:</label>
+            <div class="col-sm-2">
+                <input type="date" class="form-control date-width" id="EndDate" formControlName="endDate" placeholder="Enter EndDate" name="EndDate">
+            </div>
+        </div>
+        <!--Users Search field-->
+        <div class="form-group">
+            <label class="control-label col-sm-2 font-style" for="Users">User:</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" formControlName="user" id="user" placeholder="Enter User" name="user">
+            </div>
+            <div class="col-sm-1">
+                <button class="btn btn-Basic">Search</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-5">
+                <button (click)="addTask()" class="btn btn-Basic">Add Task</button>
+
+                <button type="reset" class="btn btn-Basic reset-btn">Reset</button>
+            </div>
+        </div>
+    </form>
+</div>
+<!--Added successfully popup-->
+<div class="w3-container font-style">
+    <div id="addTaskSuccess" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('addTaskSuccess').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h3>Task ID {{taskID}} Added Successfully</h3>
+                <hr>
+                <div class="btn-div">
+                    <button (click)="onAddSuccessClose()" class="btn btn-Basic btn-margin">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

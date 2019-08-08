@@ -1,0 +1,217 @@
+<html>
+
+<head>
+    <title>TaskManager</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+</head>
+<div class="form-group font-style">
+    <div class="col-sm-1">
+        <label class="control-label col-sm-2 font-style" for="project">Project:</label>
+    </div>
+    <div class="col-sm-3">
+        <input type="text" class="form-control" formControlName="project" id="project" placeholder="Enter Project" name="project">
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-Basic">Search</button>
+    </div>
+    <div class="col-sm-1 ">
+        <label>Sort Task by:</label>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-Basic btn-margin">StartDate</button>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-Basic btn-margin">EndDate</button>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-Basic btn-margin">Priority</button>
+    </div>
+    <div class="col-sm-1">
+        <button class="btn btn-Basic btn-margin">Completed</button>
+    </div>
+</div>
+<br>
+<hr>
+<div>
+    <table class="table">
+
+
+        <tr *ngFor="let task of tasksModel">
+            <div>
+                <div class="col-sm-12 font-style">
+                    <th>
+                        <label class="control-label col-sm-2" for="priorityTo">Task</label>
+                    </th>
+                    <th>
+                        <label class="control-label col-sm-2 align-label" for="priorityTo">Parent</label>
+                    </th>
+                    <th>
+                        <label class="control-label col-sm-2 align-label-p" for="priorityTo">Priority</label>
+                    </th>
+                    <th>
+                        <label class="control-label col-sm-2 align-label" for="priorityTo">Start</label>
+                    </th>
+                    <th>
+                        <label class="control-label col-sm-2 align-label" for="priorityTo">End</label>
+                    </th>
+                    <th>
+                        <label class="control-label col-sm-1" for="priorityTo"></label>
+                    </th>
+                    <th>
+                        <label class="control-label col-sm-1" for="priorityTo"></label>
+                    </th>
+                </div>
+                <div class="col-sm-12 font-style">
+                    <td class="col-sm-2">
+                        <input type="text" class="form-control" id="priority_to" value={{task.taskID}} name="task">
+                    </td>
+                    <td class="col-sm-2">
+                        <input type="text" class="form-control" id="priority_to" value={{task.parentID}} name="task">
+                    </td>
+                    <td class="col-sm-2">{{task.priority}}</td>
+                    <td class="col-sm-2">{{task.startDate}}</td>
+                    <td class="col-sm-2">{{task.endDate}}</td>
+                    <td class="col-sm-1">
+                        <button (click)="showUpdateTask(task)" class="btn btn-Basic">Edit</button>
+                    </td>
+                    <td class="col-sm-1">
+                        <button (click)="showDeleteTask(task)" class="btn btn-Basic">End Task</button>
+                    </td>
+                </div>
+            </div>
+            <hr>
+        </tr>
+        <hr>
+    </table>
+</div>
+<!-- update popup form-->
+
+<div class="w3-container font-style">
+    <div id="updateTask" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('updateTask').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h3>Update Task</h3>
+
+                <!-- update task form-->
+                <div>
+                    <form class="form-horizontal" [formGroup]="updateTaskForm">
+                        <!--Task field-->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 font-style" for="Task">Task ID:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" formControlName="task" id="task" placeholder="Enter Task ID" name="Task">
+                            </div>
+                        </div>
+                        <input type="hidden" class="form-control" id="TaskName" formControlName="taskName" placeholder="Enter TaskName Task" name="TaskName">
+
+                        <!--Priority-->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 font-style" for="Priority">Priority:</label>
+                            <div class="col-sm-2 slidecontainer">
+                                0
+                                <span>30</span>
+                                <input type="range" min="0" max="30" value={{priority}} formControlName="priority" class="slider" id="myRange" [(ngModel)]="p"
+                                    name="myRange" oninput="amount.value=myRange.value"> {{p}}
+                            </div>
+                        </div>
+
+                        <!-- Parent Task field-->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 font-style" for="ParentTask">Parent Task ID:</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" id="ParentTask" formControlName="parentTaskID" placeholder="Enter Parent Task ID"
+                                    name="ParentTask">
+                            </div>
+                        </div>
+                        <!--Task Start date field-->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 font-style" for="StartDate">Start Date:</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="StartDate" formControlName="startDate" placeholder="Enter Start Date" name="StartDate">
+                            </div>
+                        </div>
+                        <!--Task End date field-->
+                        <div class="form-group">
+                            <label class="control-label col-sm-2 font-style" for="Task">EndDate:</label>
+                            <div class="col-sm-4">
+                                <input type="date" class="form-control" id="EndDate" formControlName="endDate" placeholder="Enter EndDate" name="EndDate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-4">
+                                <button (click)="updateTask()" class="btn btn-Basic">Update Task</button>
+
+                                <button (click)="cancel()" class="btn btn-Basic reset-btn">Cancel</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Updated successful popup-->
+<div class="w3-container font-style">
+    <div id="updateSuccess" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('updateSuccess').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <div id="messageId">
+                    <h4>Task ID {{taskID}} Updated Successfully </h4>
+                    <hr>
+                    <div class="btn-div">
+                        <button (click)="onSuccessUpdateClose()" class="btn btn-Basic btn-margin">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete popup-->
+<div class="w3-container font-style">
+    <div id="deleteTask" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('deleteTask').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <div id="messageId">
+                    <h4>Do you want to delete the Task ID {{taskID}} ? </h4>
+                    <hr>
+                    <div class="form-group btn-div">
+                        <div class="col-sm-offset-2 col-sm-4">
+                            <button (click)="deleteTask()" class="btn btn-Basic">Yes</button>
+
+                            <button (click)="closeDeletePopup()" class="btn btn-Basic reset-btn">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Updated successful popup-->
+<div class="w3-container font-style">
+    <div id="deleteSuccess" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('deleteSuccess').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <div id="messageId">
+                    <h4>Task ID {{taskID}} Deleted Successfully </h4>
+                    <hr>
+                    <div class="btn-div">
+                        <button (click)="onSuccessDeleteClose()" class="btn btn-Basic btn-margin">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>

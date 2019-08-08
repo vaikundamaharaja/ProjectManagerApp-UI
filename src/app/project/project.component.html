@@ -1,0 +1,191 @@
+<html>
+
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<!-- Add Project form-->
+<div>
+        <form class="form-horizontal" [formGroup]="addProjectForm">
+                <!--Project field-->
+                <div class="form-group">
+                        <label class="control-label col-sm-2 font-style" for="project">Project</label>
+                        <div class="col-sm-7">
+                                <input type="text" class="form-control" formControlName="projectName" id="project-name" placeholder="Enter Project" name="project">
+                        </div>
+                </div>
+                <!--set date field-->
+
+                <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-3 font-style">
+                                <input type="checkbox" class="form-check-input col-sm-2" value="" (change)="enableDate()" formControlName="setDate">
+                                <span>Set Start and End Date</span>
+                        </div>
+                        <div class="col-sm-2">
+                                <input type="date" class="form-control col-sm-2 date-width" id="start-date" formControlName="startDate" placeholder="Enter Start Date"
+                                 name="startDate">
+                        </div>
+                        <div class="col-sm-2">
+                                <input type="date" class="form-control col-sm-2 date-width" id="end-date" formControlName="endDate" placeholder="Enter End Date" name="endDate">
+                        </div>
+                </div>
+                <!-- Set Priority -->
+                <div class="form-group">
+                        <label class="control-label col-sm-2 font-style" for="Priority">Priority:</label>
+                        <div class="col-sm-7 slidecontainer">
+                                0
+                                <span class="span-margin">30</span>
+                                <input type="range" min="0" max="30" value="0" formControlName="priority" class="slider" id="myRange" name="myRange" oninput="amount.value=myRange.value">
+                                <output id="amount" name="amount" for="rangeInput">0</output>
+                        </div>
+                </div>
+                <!-- Manager field-->
+                <div class="form-group">
+                        <label class="control-label col-sm-2 font-style" for="Manager">Manager:</label>
+                        <div class="col-sm-5">
+                                <input type="text" class="form-control" id="manager" formControlName="employeeID" readonly name="manager">
+                        </div>
+                        <div class="col-sm-2">
+                                <button (click)="searchManager()" class="btn btn-Basic">Search</button>
+                        </div>
+                </div>
+
+                <div class="form-group">
+                        <div class="col-sm-offset-5 col-sm-7">
+                                <button (click)="addProject()" class="btn btn-Basic">Add</button>
+
+                                <button type="reset" class="btn btn-Basic reset-btn">Reset</button>
+                        </div>
+                </div>
+        </form>
+</div>
+<hr>
+
+<div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-7">
+                <input type="text" class="form-control" id="search" placeholder="Search.." name="search">
+        </div>
+</div>
+<br>
+<div class="form-group font-style">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2 ">
+                <label>Sort by:</label>
+        </div>
+        <div class="col-sm-2">
+                <button class="btn btn-Basic">StartDate</button>
+        </div>
+        <div class="col-sm-2">
+                <button class="btn btn-Basic">EndDate</button>
+        </div>
+        <div class="col-sm-2">
+                <button class="btn btn-Basic">Priority</button>
+        </div>
+        <div class="col-sm-2">
+                <button class="btn btn-Basic">Completed</button>
+        </div>
+</div>
+
+<br>
+<br>
+<div>
+        <table class="table font-style">
+                <td class="col-sm-12">
+                        <div class="col-sm-12">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2">
+                                        <label class="control-label col-sm-2 " for="project">Project:</label>
+                                </div>
+                                <div class="col-sm-2">
+                                        Development
+                                </div>
+                                <div class="col-sm-2">
+                                        <label class="control-label col-sm-2 " for="project">Priority:</label>
+                                </div>
+                                <div class="col-sm-2">
+                                        5
+                                </div>
+
+                                <div class="col-sm-1">
+                                        <button class="btn btn-Basic">Update</button>
+                                </div>
+
+                        </div>
+                        <div class="col-sm-12">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2">
+                                        <label class="control-label" for="project">No-Of-Tasks:</label>
+                                </div>
+                                <div class="col-sm-2">
+                                        4
+                                </div>
+                                <div class="col-sm-2">
+                                        <label class="control-label col-sm-2 " for="project">Completed:</label>
+                                </div>
+                                <div class="col-sm-2">
+                                        1
+                                </div>
+
+                        </div>
+                        <div class="col-sm-12">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-2">
+                                        <label class="control-label" for="project">StartDate:</label>
+                                </div>
+                                <div class="col-sm-2">
+                                        21-08-2019
+                                </div>
+                                <div class="col-sm-2">
+                                        <label class="control-label col-sm-2 " for="project">EndDate:</label>
+                                </div>
+                                <div class="col-sm-2">
+                                        25-08-2019
+                                </div>
+                                <div class="col-sm-2">
+                                        <button class="btn btn-Basic">Suspend</button>
+                                </div>
+                        </div>
+
+                </td>
+
+
+        </table>
+
+</div>
+
+<!--Added successfully popup-->
+<div class="w3-container font-style">
+        <div id="searchUser" class="w3-modal">
+                <div class="w3-modal-content">
+                        <div class="w3-container">
+                                <span onclick="document.getElementById('searchUser').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                <h3>Users Details</h3>
+                                <hr>
+                                <table calss="table">
+                                        <tr>
+                                          <th><label class="control-label " for="employeeID">EmployeeID</label></th>     
+                                          <th><label class="control-label " for="firstName">First Name</label></th> 
+                                          <th><label class="control-label " for="lastName">Last Name</label></th> 
+                                        </tr>
+                                        <tr *ngFor="let user of users">
+                                                <td class="col-sm-2" (click)="selectedEmployee(user)"><a>{{user.employeeID}}</a></td>
+                                                <td class="col-sm-3">{{user.firstName}}</td>
+                                                <td class="col-sm-3">{{user.lastName}}</td>
+
+                                        </tr>
+
+                                </table>
+                                <div class="btn-div">
+                                        <button (click)="onAddSuccessClose()" class="btn btn-Basic btn-margin">Close</button>
+                                </div>
+                        </div>
+                </div>
+        </div>
+</div>
+
+</html>

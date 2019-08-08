@@ -1,0 +1,125 @@
+<html>
+
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<!-- Add User form-->
+<div>
+        <form class="form-horizontal" [formGroup]="addUserForm">
+                <!--First name field-->
+                <div class="form-group">
+                        <label class="control-label col-sm-2 font-style" for="first-name">First Name:</label>
+                        <div class="col-sm-5">
+                                <input type="text" class="form-control" formControlName="firstName" id="first-name" placeholder="Enter First Name" name="firstName">
+                        </div>
+                </div>
+
+                <!--Last name field-->
+                <div class="form-group">
+                        <label class="control-label col-sm-2 font-style" for="last-name">Last Name:</label>
+                        <div class="col-sm-5">
+                                <input type="text" class="form-control" formControlName="lastName" id="last-name" placeholder="Enter Last Name" name="lastName">
+                        </div>
+                </div>
+
+                <!--Employee ID field-->
+                <div class="form-group">
+                        <label class="control-label col-sm-2 font-style" for="employeeID">Employee ID:</label>
+                        <div class="col-sm-5">
+                                <input type="text" class="form-control" formControlName="employeeID" id="employee-id" placeholder="Enter Employee ID" name="employeeID">
+                        </div>
+                </div>
+
+                <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-5">
+                                <button (click)="addTask()" class="btn btn-Basic">Add</button>
+
+                                <button type="reset" class="btn btn-Basic reset-btn">Reset</button>
+                        </div>
+                </div>
+        </form>
+</div>
+<hr>
+
+<div class="row font-style">
+        <div class="col-sm-1"></div>
+
+
+        <div class="col-sm-2">
+                <input type="text" class="form-control" id="search" formControlName="search" placeholder="Search.." name="search">
+        </div>
+        <div class="col-sm-1 ">
+                <label>Sort:</label>
+        </div>
+        <div class="col-sm-2">
+                <button class="btn btn-Basic">First Name</button>
+        </div>
+        <div class="col-sm-2">
+                <button class="btn btn-Basic">Last Name</button>
+        </div>
+        <div class="col-sm-2">
+                <button class="btn btn-Basic">ID</button>
+        </div>
+</div>
+<br>
+
+<div>
+        <table class="table font-style">
+                <td class="col-sm-12">
+                        <div class="col-sm-12 td-div">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="first-name-1" value="" name="first-name"> </div>
+                                <div class="col-sm-2">
+                                        <button class="btn btn-Basic">Edit</button>
+                                </div>
+
+                        </div>
+
+                        <div class="col-sm-12 td-div">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="last-name-1" value="" name="last-name">
+                                </div>
+
+
+                        </div>
+
+                        <div class="col-sm-12 td-div">
+                                <div class="col-sm-1"></div>
+                                <div class="col-sm-4">
+                                        <input type="text" class="form-control" id="first-name-1" value="" name="first-name"> </div>
+                                <div class="col-sm-2">
+                                        <button class="btn btn-Basic">Delete</button>
+                                </div>
+
+                        </div>
+
+                </td>
+
+
+        </table>
+
+</div>
+
+<!--Added successfully popup-->
+<div class="w3-container font-style">
+        <div id="addTaskSuccess" class="w3-modal">
+                <div class="w3-modal-content">
+                        <div class="w3-container">
+                                <span onclick="document.getElementById('addTaskSuccess').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                <h3>Task ID {{taskID}} Added Successfully</h3>
+                                <hr>
+                                <div class="btn-div">
+                                        <button (click)="onAddSuccessClose()" class="btn btn-Basic btn-margin">Close</button>
+                                </div>
+                        </div>
+                </div>
+        </div>
+</div>
+
+</html>
