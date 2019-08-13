@@ -1,5 +1,5 @@
 export class ParentModel{
-    projectID:string;
+    parentID:string;
 	parentTask:string;
 
 }

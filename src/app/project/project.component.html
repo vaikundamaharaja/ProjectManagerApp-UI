@@ -64,37 +64,43 @@
         </form>
 </div>
 <hr>
-
+<br>
+<a (click) = "getAllProject()" class="font-style">View Projects Details Here</a>
+<!--
 <div class="row">
         <div class="col-sm-2"></div>
         <div class="col-sm-7">
                 <input type="text" class="form-control" id="search" placeholder="Search.." name="search">
         </div>
 </div>
+-->
 <br>
-<div class="form-group font-style">
+<div *ngIf="enableSort"  class="form-group font-style">
         <div class="col-sm-2"></div>
         <div class="col-sm-2 ">
                 <label>Sort by:</label>
         </div>
         <div class="col-sm-2">
-                <button class="btn btn-Basic">StartDate</button>
+                <button (click)="sortByStartDate()" class="btn btn-Basic">StartDate</button>
         </div>
         <div class="col-sm-2">
-                <button class="btn btn-Basic">EndDate</button>
+                <button class="btn btn-Basic" (click)="sortByEndDate()">EndDate</button>
         </div>
         <div class="col-sm-2">
-                <button class="btn btn-Basic">Priority</button>
+                <button class="btn btn-Basic" (click)="sortByPriority()">Priority</button>
         </div>
-        <div class="col-sm-2">
+     <!--   <div class="col-sm-2">
                 <button class="btn btn-Basic">Completed</button>
         </div>
+        -->
 </div>
 
 <br>
 <br>
-<div>
+<div class="table-responsive">
         <table class="table font-style">
+                <tbody>
+                <tr *ngFor="let project of projects">
                 <td class="col-sm-12">
                         <div class="col-sm-12">
                                 <div class="col-sm-2"></div>
@@ -102,17 +108,17 @@
                                         <label class="control-label col-sm-2 " for="project">Project:</label>
                                 </div>
                                 <div class="col-sm-2">
-                                        Development
+                                        {{project.projectName}}
                                 </div>
                                 <div class="col-sm-2">
                                         <label class="control-label col-sm-2 " for="project">Priority:</label>
                                 </div>
                                 <div class="col-sm-2">
-                                        5
+                                        {{project.priority}}
                                 </div>
 
                                 <div class="col-sm-1">
-                                        <button class="btn btn-Basic">Update</button>
+                                        <button (click)="showUpdateProject(project)" class="btn btn-Basic">Update</button>
                                 </div>
 
                         </div>
@@ -122,7 +128,7 @@
                                         <label class="control-label" for="project">No-Of-Tasks:</label>
                                 </div>
                                 <div class="col-sm-2">
-                                        4
+                                        <a (click)="getTaskList(project)">Get Task</a>
                                 </div>
                                 <div class="col-sm-2">
                                         <label class="control-label col-sm-2 " for="project">Completed:</label>
@@ -138,27 +144,27 @@
                                         <label class="control-label" for="project">StartDate:</label>
                                 </div>
                                 <div class="col-sm-2">
-                                        21-08-2019
+                                        {{project.startDate}}
                                 </div>
                                 <div class="col-sm-2">
                                         <label class="control-label col-sm-2 " for="project">EndDate:</label>
                                 </div>
                                 <div class="col-sm-2">
-                                        25-08-2019
+                                       {{project.endDate}}
                                 </div>
                                 <div class="col-sm-2">
-                                        <button class="btn btn-Basic">Suspend</button>
+                                        <button (click) = "showSuspendProject(project)" class="btn btn-Basic">Suspend</button>
                                 </div>
                         </div>
 
                 </td>
-
-
+                </tr>
+        </tbody>
         </table>
 
 </div>
 
-<!--Added successfully popup-->
+<!--Search User popup-->
 <div class="w3-container font-style">
         <div id="searchUser" class="w3-modal">
                 <div class="w3-modal-content">
@@ -181,11 +187,185 @@
 
                                 </table>
                                 <div class="btn-div">
-                                        <button (click)="onAddSuccessClose()" class="btn btn-Basic btn-margin">Close</button>
+                                        <button (click)="onSearchUserClose()" class="btn btn-Basic btn-margin">Close</button>
                                 </div>
                         </div>
                 </div>
         </div>
 </div>
 
+<!--Added successfully popup-->
+<div class="w3-container font-style">
+        <div id="addProjectSuccess" class="w3-modal">
+            <div class="w3-modal-content">
+                <div class="w3-container">
+                    <span onclick="document.getElementById('addProjectSuccess').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                    <h3>Project {{projectName}} Added Successfully</h3>
+                    <hr>
+                    <div class="btn-div">
+                        <button (click)="onAddSuccessClose()" class="btn btn-Basic btn-margin">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- update project popup form-->
+
+<div class="w3-container font-style">
+                <div id="updateProject" class="w3-modal">
+                    <div class="w3-modal-content">
+                        <div class="w3-container">
+                            <span onclick="document.getElementById('updateProject').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                            <h3>Update Project</h3>
+            <hr>
+                            <!-- update task form-->
+                            <form class="form-horizontal" [formGroup]="updateProjectForm">
+                                        <!--Project field-->
+                                        <div class="form-group">
+                                                <label class="control-label col-sm-2 font-style" for="project">Project</label>
+                                                <div class="col-sm-9">
+                                                        <input type="text" class="form-control" formControlName="projectName" id="project-name" placeholder="Enter Project" name="project">
+                                                        <input type="hidden" class="form-control" formControlName="projectID" id="project-id">
+
+                                                </div>
+                                        </div>
+                                        <!--set date field-->
+                        
+                                        <div class="row">
+                                                <div class="col-sm-2"></div>
+                                                <div class="col-sm-3 font-style">
+                                                        <input type="checkbox" class="form-check-input col-sm-2" value="" (change)="updatePopupEnableDate()" formControlName="setDate">
+                                                        <span>Set Start and End Date</span>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                        <input type="date" class="form-control col-sm-2 date-width" id="start-date" formControlName="startDate" placeholder="Enter Start Date"
+                                                         name="startDate">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                        <input type="date" class="form-control col-sm-2 date-width" id="end-date" formControlName="endDate" placeholder="Enter End Date" name="endDate">
+                                                </div>
+                                        </div>
+                                        <!-- Set Priority -->
+                                        <div class="form-group">
+                                                <label class="control-label col-sm-2 font-style" for="Priority">Priority:</label>
+                                                <div class="col-sm-8 slidecontainer">
+                                                        0<span class="span-margin-popup">30</span>
+                                                        <input type="range" min="0" max="30" value={{priority}} formControlName="priority" class="slider" [(ngModel)]="p">
+                                                        {{p}}
+                                                </div>
+                                        </div>
+                                        <input type="hidden" class="form-control" id="manager" formControlName="employeeID" readonly name="manager">
+
+                                        <!-- Manager field-->
+                                        <!-- TO DO Manager Update Pop up 
+                                        <div class="form-group">
+                                                <label class="control-label col-sm-2 font-style" for="Manager">Manager:</label>
+                                                <div class="col-sm-5">
+                                                        <input type="text" class="form-control" id="manager" formControlName="employeeID" readonly name="manager">
+                                                </div>
+                                                <div class="col-sm-2">
+                                                        <button (click)="searchManager()" class="btn btn-Basic">Search</button>
+                                                </div>
+
+                                        </div>
+                        -->
+                                        <div class="form-group">
+                                                <div class="col-sm-offset-5 col-sm-7">
+                                                        <button (click)="updateProject()" class="btn btn-Basic">Update</button>
+                        
+                                                        <button (click)="updateProjectClose()" class="btn btn-Basic reset-btn">Cancel</button>
+                                                </div>
+                                        </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--Update success popup-->
+<div class="w3-container font-style">
+                <div id="updateProjectSuccessPopup" class="w3-modal">
+                    <div class="w3-modal-content">
+                        <div class="w3-container">
+                            <span onclick="document.getElementById('updateProjectSuccessPopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                            <h3>Project "{{projectName}}" Updated Successfully</h3>
+                            <hr>
+                            <div class="btn-div">
+                                <button (click)="updateProjectSuccessPopupClose()" class="btn btn-Basic btn-margin">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--Show task list popup-->
+<div class="w3-container font-style">
+                <div id="showTaskList" class="w3-modal">
+                    <div class="w3-modal-content">
+                        <div class="w3-container">
+                            <span onclick="document.getElementById('showTaskList').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                            <h3>Projects Details</h3>
+                            <hr>
+                            <div class="table-responsive">
+                            <table calss="table">
+                                <tr>
+                                  <th><label class="control-label " for="projectID">Task ID</label></th>     
+                                  <th><label class="control-label " for="projectName">Task Name</label></th> 
+                                  <th><label class="control-label " for="priority">Priority</label></th> 
+                                  <th><label class="control-label " for="priority">StartDate</label></th> 
+                                  <th><label class="control-label " for="priority">StartDate</label></th> 
+                                </tr>
+                                <tr *ngFor="let task of tasks">
+                                        <td class="col-sm-2">{{task.taskID}}</td>
+                                        <td class="col-sm-3">{{task.task}}</td>
+                                        <td class="col-sm-2">{{task.priority}}</td>
+                                        <td class="col-sm-2">{{task.startDate}}</td>
+                                        <td class="col-sm-2">{{task.endDate}}</td>
+            
+                                </tr>
+            
+                        </table>
+                            </div>
+                            <div class="btn-div">
+                                <button (click)="searchProjectClose()" class="btn btn-Basic btn-margin">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            <!--Delete Project popup-->
+<div class="w3-container font-style">
+                <div id="suspendProjectPopup" class="w3-modal">
+                    <div class="w3-modal-content">
+                        <div class="w3-container">
+                            <span onclick="document.getElementById('suspendProjectPopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                            <h3>Do you wnat to Suspend "{{projectName}}" Project ?</h3>
+                            <hr>
+
+                            <div class="form-group">
+                                        <div class="col-sm-offset-5 col-sm-7">
+                                                <button (click)="suspendProject()" class="btn btn-Basic">Yes</button>
+                
+                                                <button (click)="suspendProjectPopupClose()" class="btn btn-Basic reset-btn">No</button>
+                                        </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--Suspend success popup-->
+<div class="w3-container font-style">
+                <div id="suspendProjectSuccessPopup" class="w3-modal">
+                    <div class="w3-modal-content">
+                        <div class="w3-container">
+                            <span onclick="document.getElementById('suspendProjectSuccessPopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                            <h3>Project "{{projectName}}" Suspended Successfully</h3>
+                            <hr>
+                            <div class="btn-div">
+                                <button (click)="suspendProjectSuccessPopupClose()" class="btn btn-Basic btn-margin">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 </html>

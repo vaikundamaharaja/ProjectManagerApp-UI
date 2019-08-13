@@ -36,7 +36,7 @@
 
                 <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-5">
-                                <button (click)="addTask()" class="btn btn-Basic">Add</button>
+                                <button (click)="addUser()" class="btn btn-Basic">Add</button>
 
                                 <button type="reset" class="btn btn-Basic reset-btn">Reset</button>
                         </div>
@@ -45,37 +45,42 @@
 </div>
 <hr>
 
-<div class="row font-style">
+<a (click)="getAllUser()" class="font-style">View Employee Details here</a>
+
+<div *ngIf="enableSort" class="row font-style">
         <div class="col-sm-1"></div>
 
-
+<!--
         <div class="col-sm-2">
-                <input type="text" class="form-control" id="search" formControlName="search" placeholder="Search.." name="search">
+                <input type="text" class="form-control" id="search" placeholder="Search.." name="search">
         </div>
+        -->
         <div class="col-sm-1 ">
                 <label>Sort:</label>
         </div>
         <div class="col-sm-2">
-                <button class="btn btn-Basic">First Name</button>
+                <button class="btn btn-Basic" (click)="sortByFirstName()">First Name</button>
         </div>
         <div class="col-sm-2">
-                <button class="btn btn-Basic">Last Name</button>
+                <button class="btn btn-Basic" (click)="sortByLastName()">Last Name</button>
         </div>
         <div class="col-sm-2">
-                <button class="btn btn-Basic">ID</button>
+                <button class="btn btn-Basic" (click)="sortByEmployeeID()">Employee ID</button>
         </div>
 </div>
 <br>
 
-<div>
+<div class="table-responsive">
         <table class="table font-style">
+                <tbody>
+                <tr *ngFor="let user of users">
                 <td class="col-sm-12">
                         <div class="col-sm-12 td-div">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="first-name-1" value="" name="first-name"> </div>
+                                        <input type="text" class="form-control" id="first-name-1" value={{user.firstName}} name="first-name"> </div>
                                 <div class="col-sm-2">
-                                        <button class="btn btn-Basic">Edit</button>
+                                        <button class="btn btn-Basic" (click)="showUpdateUserPopup(user)">Edit</button>
                                 </div>
 
                         </div>
@@ -83,7 +88,7 @@
                         <div class="col-sm-12 td-div">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="last-name-1" value="" name="last-name">
+                                        <input type="text" class="form-control" id="last-name-1" value={{user.lastName}} name="last-name">
                                 </div>
 
 
@@ -92,15 +97,16 @@
                         <div class="col-sm-12 td-div">
                                 <div class="col-sm-1"></div>
                                 <div class="col-sm-4">
-                                        <input type="text" class="form-control" id="first-name-1" value="" name="first-name"> </div>
+                                        <input type="text" class="form-control" id="employee-id-1" value={{user.employeeID}} name="first-name"> </div>
                                 <div class="col-sm-2">
-                                        <button class="btn btn-Basic">Delete</button>
+                                        <button class="btn btn-Basic" (click)="showDeleteUserPopup(user)">Delete</button>
                                 </div>
 
                         </div>
 
                 </td>
-
+        </tr>
+</tbody>
 
         </table>
 
@@ -108,18 +114,115 @@
 
 <!--Added successfully popup-->
 <div class="w3-container font-style">
-        <div id="addTaskSuccess" class="w3-modal">
+        <div id="addUserPopup" class="w3-modal">
                 <div class="w3-modal-content">
                         <div class="w3-container">
-                                <span onclick="document.getElementById('addTaskSuccess').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                                <h3>Task ID {{taskID}} Added Successfully</h3>
+                                <span onclick="document.getElementById('addUserPopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                <h3>User {{firstName}}-{{lastName}} Added Successfully</h3>
                                 <hr>
                                 <div class="btn-div">
-                                        <button (click)="onAddSuccessClose()" class="btn btn-Basic btn-margin">Close</button>
+                                        <button (click)="addUserPopupClose()" class="btn btn-Basic btn-margin">Close</button>
                                 </div>
                         </div>
                 </div>
         </div>
 </div>
+<!-- Update User PopUp-->
+<div class="w3-container font-style">
+                <div id="updateUserPopup" class="w3-modal">
+                        <div class="w3-modal-content">
+                                <div class="w3-container">
+                                        <span onclick="document.getElementById('updateUserPopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                        <h3>User Update</h3>
+                                        <hr>
+                                        <form class="form-horizontal" [formGroup]="updateUserForm">
+                                        <!--First name field-->
+                <div class="form-group">
+                                <label class="control-label col-sm-2 font-style" for="first-name">First Name:</label>
+                                <div class="col-sm-5">
+                                        <input type="text" class="form-control" formControlName="firstName" id="update-first-name"  name="firstName">
+                                </div>
+                        </div>
+        
+                        <!--Last name field-->
+                        <div class="form-group">
+                                <label class="control-label col-sm-2 font-style" for="last-name">Last Name:</label>
+                                <div class="col-sm-5">
+                                        <input type="text" class="form-control" formControlName="lastName" id="update-last-name" name="lastName">
+                                </div>
+                        </div>
+        
+                        <!--Employee ID field-->
+                        <div class="form-group">
+                                <label class="control-label col-sm-2 font-style" for="employeeID">Employee ID:</label>
+                                <div class="col-sm-5">
+                                        <input type="text" class="form-control" formControlName="employeeID" id="update-employee-id"  name="employeeID">
+                                        <input type="hidden" class="form-control" formControlName="userID" id="updat-user-id"  name="userID">
 
+                                </div>
+                        </div>
+        
+                        <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-5">
+                                        <button (click)="updateUser()" class="btn btn-Basic">Update</button>
+        
+                                        <button (click)="updateUserPopupClose()" class="btn btn-Basic reset-btn">Cancel</button>
+                                </div>
+                        </div>
+                </form>
+                                        
+                                </div>
+                        </div>
+                </div>
+        </div>
+<!--Update successfully popup-->
+<div class="w3-container font-style">
+                <div id="updateUserSuccessPopup" class="w3-modal">
+                        <div class="w3-modal-content">
+                                <div class="w3-container">
+                                        <span onclick="document.getElementById('updateUserSuccessPopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                        <h3>User {{firstName}}-{{lastName}} Updated Successfully</h3>
+                                        <hr>
+                                        <div class="btn-div">
+                                                <button (click)="updateUserSuccessPopupClose()" class="btn btn-Basic btn-margin">Close</button>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+
+        <!--Delete User popup-->
+<div class="w3-container font-style">
+                <div id="deleteUserPopup" class="w3-modal">
+                        <div class="w3-modal-content">
+                                <div class="w3-container">
+                                        <span onclick="document.getElementById('deleteUserPopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                        <h3>Do you want to delete the Employee "{{firstName}}-{{lastName}}" </h3>
+                                        <hr>
+                                        <div class="form-group">
+                                                        <div class="col-sm-offset-3 col-sm-5">
+                                                                <button (click)="deleteUser()" class="btn btn-Basic">Yes</button>
+                                
+                                                                <button (click)="deleteUserPopupClose()" class="btn btn-Basic reset-btn">No</button>
+                                                        </div>
+                                                </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <!--Delete successfully popup-->
+<div class="w3-container font-style">
+                <div id="deleteUserSuccessPopup" class="w3-modal">
+                        <div class="w3-modal-content">
+                                <div class="w3-container">
+                                        <span onclick="document.getElementById('deleteUserSuccessPopup').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                        <h3>User {{firstName}}-{{lastName}} Deleted Successfully</h3>
+                                        <hr>
+                                        <div class="btn-div">
+                                                <button (click)="deleteUserSuccessPopupClose()" class="btn btn-Basic btn-margin">Close</button>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        </div>
 </html>

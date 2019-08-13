@@ -13,6 +13,7 @@ import { ViewTaskComponent } from './task/view-task/view-task.component';
 import { ProjectServices } from './project/project-service/project-services';
 import { TaskServices } from './task/task-service/task-service';
 import { UsersServices } from './users/user-service/users-service';
+import { ParentTaskServices } from './task/task-service/parent-task-service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { UsersServices } from './users/user-service/users-service';
   providers: [
     ProjectServices,
     TaskServices,
-    UsersServices
+    UsersServices,
+    ParentTaskServices
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

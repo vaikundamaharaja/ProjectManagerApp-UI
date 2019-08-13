@@ -27,19 +27,19 @@ export class TaskServices{
       }
       addTask (taskModel: TaskModel): Observable<any> {
           return this.http.post<any>(this.endpoint + 'addTask', JSON.stringify(taskModel), this.httpOptions).pipe(
-          tap((taskModel) => console.log(`added Task w/ id=${taskModel.parentID}  ${taskModel.task}`)),
+          tap(),
           catchError(this.handleError<any>('Add task'))
         );
       }
       updateTask (taskModel: TaskModel, taskID: string): Observable<any> {
         return this.http.put<any>(this.endpoint + 'updateTask/'+`${taskID}`, JSON.stringify(taskModel), this.httpOptions).pipe(
-          tap((taskModel) => console.log(`updated task w/ id=${taskModel.parentID}  ${taskModel.task}`)),
+          tap(),
           catchError(this.handleError<any>('Update task'))
         );
       }
       deleteTask (taskID: string): Observable<any> {
         return this.http.delete<any>(this.endpoint + 'deleteTask/' + taskID, this.httpOptions).pipe(
-          tap(_ => console.log(`deleted task id=${taskID}`)),
+          tap(),
           catchError(this.handleError<any>('delete task'))
         );
       }
@@ -59,13 +59,28 @@ export class TaskServices{
         return this.http.get(this.endpoint + 'findTasksByParentID/'+`${parentID}`).pipe(
           map(this.extractData));
       }    
-      
+      getTaskByProjectID(projectID:string){
+        return this.http.get(this.endpoint + 'getTaskByProjectID/'+`${projectID}`).pipe(
+          map(this.extractData));
+      }
       getAllTasks(): Observable<any> {
         return this.http.get(this.endpoint + 'getAllTasks').pipe(
           map(this.extractData));
       }
       getTasks(task: string): Observable<any> {
         return this.http.get(this.endpoint + 'getTask/'+`${task}`).pipe(
+          map(this.extractData));
+      }
+      getTasksSortByStartDate(): Observable<any> {
+        return this.http.get(this.endpoint + 'getTasksOrderByStartDate').pipe(
+          map(this.extractData));
+      }
+      getTasksSortByEndDate(): Observable<any> {
+        return this.http.get(this.endpoint + 'getTasksOrderByEndDate').pipe(
+          map(this.extractData));
+      }
+      getTasksSortByPriority(): Observable<any> {
+        return this.http.get(this.endpoint + 'getTasksOrderByPriority').pipe(
           map(this.extractData));
       }
       private handleError<T> (operation = 'operation', result?: T) {

@@ -15,10 +15,10 @@
         <div class="form-group">
             <label class="control-label col-sm-2 font-style" for="Task">Project:</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" formControlName="project" id="project" placeholder="Enter Project" name="project">
+                <input type="text" class="form-control" formControlName="project" id="project" placeholder="Select Project" name="project">
             </div>
             <div class="col-sm-1">
-                <button class="btn btn-Basic">Search</button>
+                <button class="btn btn-Basic" (click)="getAllProjectList()">Search</button>
             </div>
         </div>
         <!--Task field-->
@@ -34,7 +34,7 @@
 
             <div class="form-check">
                 <label class="form-check-label font-style">
-                    <input type="checkbox" class="form-check-input" value="" formControlName="isParentTask">Parent Task
+                    <input type="checkbox" class="form-check-input" value="" (change)="isParentTask()" formControlName="isParentTask">Parent Task
                 </label>
             </div>
         </div>
@@ -52,10 +52,10 @@
         <div class="form-group">
             <label class="control-label col-sm-2 font-style" for="ParentTask">Parent Task:</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" formControlName="parentTask" id="parent-task" placeholder="Enter Project Task" name="parentTask">
+                <input type="text" class="form-control" formControlName="parentTask" id="parent-task" placeholder="Select Project Task" name="parentTask">
             </div>
             <div class="col-sm-1">
-                <button class="btn btn-Basic">Search</button>
+                <button class="btn btn-Basic" [disabled]="btnEnableState" (click)="getAllParentTaskList()">Search</button>
             </div>
         </div>
         <!--Task Start date field-->
@@ -74,28 +74,113 @@
         <div class="form-group">
             <label class="control-label col-sm-2 font-style" for="Users">User:</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" formControlName="user" id="user" placeholder="Enter User" name="user">
+                <input type="text" class="form-control" formControlName="user" id="user" placeholder="Select User" name="user">
             </div>
             <div class="col-sm-1">
-                <button class="btn btn-Basic">Search</button>
+                <button class="btn btn-Basic" [disabled]="btnEnableState"  (click)="getAllUsersList()">Search</button>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-5">
-                <button (click)="addTask()" class="btn btn-Basic">Add Task</button>
+                <button (click)="checkTask()" class="btn btn-Basic">Add Task</button>
 
                 <button type="reset" class="btn btn-Basic reset-btn">Reset</button>
             </div>
         </div>
     </form>
 </div>
+<!--Search Project popup-->
+<div class="w3-container font-style">
+    <div id="searchProject" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('searchProject').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h3>Projects Details</h3>
+                <hr>
+                <table calss="table">
+                    <tr>
+                      <th><label class="control-label " for="projectID">Project ID</label></th>     
+                      <th><label class="control-label " for="projectName">Project Name</label></th> 
+                      <th><label class="control-label " for="priority">Priority</label></th> 
+                    </tr>
+                    <tr *ngFor="let project of projects">
+                            <td class="col-sm-2" (click)="selectedProject(project)"><a>{{project.projectID}}</a></td>
+                            <td class="col-sm-3">{{project.projectName}}</td>
+                            <td class="col-sm-3">{{project.priority}}</td>
+
+                    </tr>
+
+            </table>
+                <div class="btn-div">
+                    <button (click)="searchProjectClose()" class="btn btn-Basic btn-margin">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Search Parent Task popup-->
+<div class="w3-container font-style">
+    <div id="searchParentTask" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('searchParentTask').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h3>Parent Task Details</h3>
+                <hr>
+                <table calss="table">
+                    <tr>
+                      <th><label class="control-label " for="parentTaskID">Parent Task ID</label></th>     
+                      <th><label class="control-label " for="parentTaskName">Parent Task Name</label></th> 
+                    </tr>
+                    <tr *ngFor="let parentTask of parentTasks">
+                            <td class="col-sm-2" (click)="selectedParentTask(parentTask)"><a>{{parentTask.parentID}}</a></td>
+                            <td class="col-sm-3">{{parentTask.parentTask}}</td>
+                    </tr>
+            </table>
+                <div class="btn-div">
+                    <button (click)="searchParentTaskClose()" class="btn btn-Basic btn-margin">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Search User popup-->
+<div class="w3-container font-style">
+    <div id="searchUser" class="w3-modal">
+        <div class="w3-modal-content">
+            <div class="w3-container">
+                <span onclick="document.getElementById('searchUser').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <h3>Projects Details</h3>
+                <hr>
+                <table calss="table">
+                    <tr>
+                      <th><label class="control-label " for="userID">User ID</label></th>     
+                      <th><label class="control-label " for="firstName">First Name</label></th> 
+                      <th><label class="control-label " for="lastName">Last Name</label></th> 
+                    </tr>
+                    <tr *ngFor="let user of users">
+                            <td class="col-sm-2" (click)="selectedUser(user)"><a>{{user.userID}}</a></td>
+                            <td class="col-sm-3">{{user.firstName}}</td>
+                            <td class="col-sm-3">{{user.lastName}}</td>
+                    </tr>
+            </table>
+                <div class="btn-div">
+                    <button (click)="searchUserClose()" class="btn btn-Basic btn-margin">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!--Added successfully popup-->
 <div class="w3-container font-style">
     <div id="addTaskSuccess" class="w3-modal">
         <div class="w3-modal-content">
             <div class="w3-container">
                 <span onclick="document.getElementById('addTaskSuccess').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <h3>Task ID {{taskID}} Added Successfully</h3>
+                <h3>Task {{taskName}} Added Successfully</h3>
                 <hr>
                 <div class="btn-div">
                     <button (click)="onAddSuccessClose()" class="btn btn-Basic btn-margin">Close</button>

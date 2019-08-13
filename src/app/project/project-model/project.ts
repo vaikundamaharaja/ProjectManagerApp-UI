@@ -4,6 +4,6 @@ export class ProjectModel{
     startDate:string;
     endDate: string;
     priority:number;
-    //employeeID:string;
+    employeeID:string;
 
 }

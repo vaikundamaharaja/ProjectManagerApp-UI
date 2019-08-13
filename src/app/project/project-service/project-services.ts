@@ -45,6 +45,33 @@ export class ProjectServices{
     return this.http.get(this.endpoint + 'getProjectByName/'+`${projectName}`).pipe(
       map(this.extractData));
   }
+
+  updateProject (projectModel: ProjectModel, projectID: string): Observable<any> {
+    console.log(this.endpoint + 'updateProject/'+`${projectID}`);
+    return this.http.put<any>(this.endpoint + 'updateProject/'+`${projectID}`, JSON.stringify(projectModel), this.httpOptions).pipe(
+      tap(),
+      catchError(this.handleError<any>('Update task'))
+    );
+  }
+  deleteProject (projectID: string): Observable<any> {
+    return this.http.delete<any>(this.endpoint + 'deleteProject/' + projectID, this.httpOptions).pipe(
+      tap(),
+      catchError(this.handleError<any>('delete task'))
+    );
+  }
+  getProjectsSortByStartDate(): Observable<any> {
+    return this.http.get(this.endpoint + 'getProjectsOrderByStartDate').pipe(
+      map(this.extractData));
+  }
+  getProjectsSortByEndDate(): Observable<any> {
+    return this.http.get(this.endpoint + 'getProjectsOrderByEndDate').pipe(
+      map(this.extractData));
+  }
+  getProjectsSortByPriority(): Observable<any> {
+    return this.http.get(this.endpoint + 'getProjectsOrderByPriority').pipe(
+      map(this.extractData));
+  }
+
   private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
   

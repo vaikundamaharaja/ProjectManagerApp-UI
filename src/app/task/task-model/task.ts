@@ -7,5 +7,6 @@ export class TaskModel{
 	endDate: string;
 	status:string;
 	priority:number;
+	userID: string;
 
 }

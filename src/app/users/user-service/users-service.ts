@@ -39,18 +39,30 @@ getAllUsers(): Observable<any> {
     return this.http.get(this.endpoint + 'getUser/'+`${userID}`).pipe(
       map(this.extractData));
   }
-  updateTask (user: UsersModel, userID: string): Observable<any> {
+  updateUser (user: UsersModel, userID: string): Observable<any> {
     console.log(user);
     return this.http.put<any>(this.endpoint + 'updateUser/'+`${userID}`, JSON.stringify(user), this.httpOptions).pipe(
       tap(),
       catchError(this.handleError<any>('Update User'))
     );
   }
-  deleteTask (userID: string): Observable<any> {
-    return this.http.delete<any>(this.endpoint + 'deleteTask/' + userID, this.httpOptions).pipe(
+  deleteUser (userID: string): Observable<any> {
+    return this.http.delete<any>(this.endpoint + 'deleteUser/' + userID, this.httpOptions).pipe(
       tap(),
       catchError(this.handleError<any>('delete user'))
     );
+  }
+  getUsersSortByFirstName(): Observable<any> {
+    return this.http.get(this.endpoint + 'getUsersOrderByFirstName').pipe(
+      map(this.extractData));
+  }
+  getUsersSortByLastName(): Observable<any> {
+    return this.http.get(this.endpoint + 'getUsersOrderByLastName').pipe(
+      map(this.extractData));
+  }
+  getUsersSortByEmployeeID(): Observable<any> {
+    return this.http.get(this.endpoint + 'getUsersOrderByEmployeeID').pipe(
+      map(this.extractData));
   }
 private handleError<T> (operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
