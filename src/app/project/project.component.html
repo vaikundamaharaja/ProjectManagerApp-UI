@@ -9,12 +9,15 @@
 </head>
 <!-- Add Project form-->
 <div>
-        <form class="form-horizontal" [formGroup]="addProjectForm">
+        <form class="form-horizontal" [formGroup]="addProjectForm" (ngSubmit)="addProject()">
                 <!--Project field-->
                 <div class="form-group">
                         <label class="control-label col-sm-2 font-style" for="project">Project</label>
                         <div class="col-sm-7">
-                                <input type="text" class="form-control" formControlName="projectName" id="project-name" placeholder="Enter Project" name="project">
+                                <input type="text" class="form-control" formControlName="projectName" id="project-name" placeholder="Enter Project" [ngClass]="{ 'invalid': submitted && f.projectName.errors }" required>
+                                <div *ngIf="submitted && f.projectName.errors" class="invalid-message">
+                                                <div *ngIf="f.projectName.errors.required">Project Name is required</div>
+                                            </div>
                         </div>
                 </div>
                 <!--set date field-->
@@ -47,7 +50,10 @@
                 <div class="form-group">
                         <label class="control-label col-sm-2 font-style" for="Manager">Manager:</label>
                         <div class="col-sm-5">
-                                <input type="text" class="form-control" id="manager" formControlName="employeeID" readonly name="manager">
+                                <input type="text" class="form-control" id="manager" formControlName="employeeID" readonly name="manager" [ngClass]="{ 'invalid': submitted && f.employeeID.errors }" required>
+                                <div *ngIf="submitted && f.employeeID.errors" class="invalid-message">
+                                                <div *ngIf="f.employeeID.errors.required">EmployeeID is required</div>
+                                            </div>
                         </div>
                         <div class="col-sm-2">
                                 <button (click)="searchManager()" class="btn btn-Basic">Search</button>
@@ -56,7 +62,7 @@
 
                 <div class="form-group">
                         <div class="col-sm-offset-5 col-sm-7">
-                                <button (click)="addProject()" class="btn btn-Basic">Add</button>
+                                <button  class="btn btn-Basic">Add</button>
 
                                 <button type="reset" class="btn btn-Basic reset-btn">Reset</button>
                         </div>

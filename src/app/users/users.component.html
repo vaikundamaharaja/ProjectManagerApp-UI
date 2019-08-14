@@ -9,12 +9,15 @@
 </head>
 <!-- Add User form-->
 <div>
-        <form class="form-horizontal" [formGroup]="addUserForm">
+        <form class="form-horizontal" [formGroup]="addUserForm" (ngSubmit)="addUser()">
                 <!--First name field-->
                 <div class="form-group">
                         <label class="control-label col-sm-2 font-style" for="first-name">First Name:</label>
                         <div class="col-sm-5">
-                                <input type="text" class="form-control" formControlName="firstName" id="first-name" placeholder="Enter First Name" name="firstName">
+                                <input type="text" class="form-control" formControlName="firstName" id="first-name" placeholder="Enter First Name" name="firstName" [ngClass]="{ 'invalid': submitted && f.firstName.errors }" required>
+                                <div *ngIf="submitted && f.firstName.errors" class="invalid-message">
+                                                <div *ngIf="f.firstName.errors.required">Project Name is required</div>
+                                </div>
                         </div>
                 </div>
 
@@ -22,7 +25,10 @@
                 <div class="form-group">
                         <label class="control-label col-sm-2 font-style" for="last-name">Last Name:</label>
                         <div class="col-sm-5">
-                                <input type="text" class="form-control" formControlName="lastName" id="last-name" placeholder="Enter Last Name" name="lastName">
+                                <input type="text" class="form-control" formControlName="lastName" id="last-name" placeholder="Enter Last Name" name="lastName" [ngClass]="{ 'invalid': submitted && f.lastName.errors }" required>
+                                <div *ngIf="submitted && f.lastName.errors" class="invalid-message">
+                                                <div *ngIf="f.lastName.errors.required">Last Name is required</div>
+                                </div>
                         </div>
                 </div>
 
@@ -30,13 +36,16 @@
                 <div class="form-group">
                         <label class="control-label col-sm-2 font-style" for="employeeID">Employee ID:</label>
                         <div class="col-sm-5">
-                                <input type="text" class="form-control" formControlName="employeeID" id="employee-id" placeholder="Enter Employee ID" name="employeeID">
+                                <input type="text" class="form-control" formControlName="employeeID" id="employee-id" placeholder="Enter Employee ID" name="employeeID" [ngClass]="{ 'invalid': submitted && f.employeeID.errors }" required>
+                                <div *ngIf="submitted && f.employeeID.errors" class="invalid-message">
+                                                <div *ngIf="f.employeeID.errors.required">Employee ID is required</div>
+                                </div>
                         </div>
                 </div>
 
                 <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-5">
-                                <button (click)="addUser()" class="btn btn-Basic">Add</button>
+                                <button class="btn btn-Basic">Add</button>
 
                                 <button type="reset" class="btn btn-Basic reset-btn">Reset</button>
                         </div>

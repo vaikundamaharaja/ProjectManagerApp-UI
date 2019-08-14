@@ -10,12 +10,15 @@
 </head>
 <!-- Add task form-->
 <div>
-    <form class="form-horizontal" [formGroup]="addTaskForm">
+    <form class="form-horizontal" [formGroup]="addTaskForm" (ngSubmit)="checkTask()">
         <!--Project Search field-->
         <div class="form-group">
             <label class="control-label col-sm-2 font-style" for="Task">Project:</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" formControlName="project" id="project" placeholder="Select Project" name="project">
+                <input type="text" class="form-control" formControlName="project" id="project" readonly placeholder="Select Project" name="project" [ngClass]="{ 'invalid': submitted && f.project.errors }" required>
+                <div *ngIf="submitted && f.project.errors" class="invalid-message">
+                        <div *ngIf="f.project.errors.required">Project Name is required</div>
+                    </div>
             </div>
             <div class="col-sm-1">
                 <button class="btn btn-Basic" (click)="getAllProjectList()">Search</button>
@@ -25,7 +28,10 @@
         <div class="form-group">
             <label class="control-label col-sm-2 font-style" for="Task">Task:</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" formControlName="task" id="task" placeholder="Enter Task" name="Task">
+                <input type="text" class="form-control" formControlName="task" id="task" placeholder="Enter Task" name="Task" [ngClass]="{ 'invalid': submitted && f.task.errors }" required>
+                <div *ngIf="submitted && f.task.errors" class="invalid-message">
+                        <div *ngIf="f.task.errors.required">Task Name is required</div>
+                    </div>
             </div>
         </div>
         <!--Parent Task Check box-->
@@ -52,7 +58,10 @@
         <div class="form-group">
             <label class="control-label col-sm-2 font-style" for="ParentTask">Parent Task:</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" formControlName="parentTask" id="parent-task" placeholder="Select Project Task" name="parentTask">
+                <input type="text" class="form-control" formControlName="parentTask" id="parent-task" readonly placeholder="Select Project Task" name="parentTask" [ngClass]="{ 'invalid': submitted && f.parentTask.errors }" required>
+                <div *ngIf="submitted && f.parentTask.errors" class="invalid-message">
+                        <div *ngIf="f.parentTask.errors.required">Parent Task is required</div>
+                    </div>
             </div>
             <div class="col-sm-1">
                 <button class="btn btn-Basic" [disabled]="btnEnableState" (click)="getAllParentTaskList()">Search</button>
@@ -74,7 +83,10 @@
         <div class="form-group">
             <label class="control-label col-sm-2 font-style" for="Users">User:</label>
             <div class="col-sm-3">
-                <input type="text" class="form-control" formControlName="user" id="user" placeholder="Select User" name="user">
+                <input type="text" class="form-control" formControlName="user" id="user" readonly placeholder="Select User" name="user" [ngClass]="{ 'invalid': submitted && f.user.errors }" required>
+                <div *ngIf="submitted && f.user.errors" class="invalid-message">
+                        <div *ngIf="f.user.errors.required">User ID is required</div>
+                    </div>
             </div>
             <div class="col-sm-1">
                 <button class="btn btn-Basic" [disabled]="btnEnableState"  (click)="getAllUsersList()">Search</button>
@@ -82,7 +94,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-3 col-sm-5">
-                <button (click)="checkTask()" class="btn btn-Basic">Add Task</button>
+                <button  class="btn btn-Basic">Add Task</button>
 
                 <button type="reset" class="btn btn-Basic reset-btn">Reset</button>
             </div>

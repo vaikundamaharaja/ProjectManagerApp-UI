@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ProjectServices } from './project-service/project-services';
-import { fbind } from 'q';
 import { UsersServices } from '../users/user-service/users-service';
 import { ProjectModel } from './project-model/project';
 import { UsersModel } from '../users/user-model/users';
-import { isNullOrUndefined } from 'util';
 import { TaskServices } from '../task/task-service/task-service';
-import { TaskModel } from '../task/task-model/task';
 
 @Component({
   selector: 'app-project',
@@ -17,12 +14,12 @@ import { TaskModel } from '../task/task-model/task';
 export class ProjectComponent implements OnInit {
 
   addProjectForm = this.fb.group({
-    projectName:[''],
+    projectName:['', Validators.required],
     setDate:[''],
     startDate:[{value: '',disabled:true}],
     endDate:[{value: '',disabled:true}],
-    priority:['0'],
-    employeeID:['']
+    priority:['0',],
+    employeeID:['',Validators.required]
   });
   updateProjectForm = this.fb.group({
     projectName:[''],
@@ -43,7 +40,7 @@ export class ProjectComponent implements OnInit {
   projectName: string;
   projectID: string;
   enableSort: boolean = false;
-
+  submitted = false;
 
   constructor(private fb: FormBuilder,
      private projectService: ProjectServices,
@@ -57,6 +54,10 @@ export class ProjectComponent implements OnInit {
   }
 
   addProject(){
+    this.submitted = true;
+    if (this.addProjectForm.invalid) {
+      return;
+  }
     this.project.projectName = this.addProjectForm.controls.projectName.value;
     this.projectName =  this.addProjectForm.controls.projectName.value;
     this.project.startDate = this.addProjectForm.controls.startDate.value;
@@ -68,6 +69,7 @@ export class ProjectComponent implements OnInit {
   document.getElementById('addProjectSuccess').style.display='block';
   
   }
+  get f() { return this.addProjectForm.controls; }
   onAddSuccessClose(){
     this.getAllProject();
     document.getElementById('addProjectSuccess').style.display='none';

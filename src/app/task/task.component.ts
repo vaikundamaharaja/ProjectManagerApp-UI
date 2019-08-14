@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectModel } from '../project/project-model/project';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { TaskServices } from './task-service/task-service';
 import { ProjectServices } from '../project/project-service/project-services';
 import { UsersServices } from '../users/user-service/users-service';
@@ -17,14 +17,14 @@ import { TaskModel } from './task-model/task';
 export class TaskComponent implements OnInit {
 
   addTaskForm = this.fb.group({
-    project:[{value: '', disabled: true}],
+    project:['', Validators.required],
     task:[''],
     isParentTask:[''],
     priority:['0'],
-    parentTask:[{value: '', disabled: true}],
+    parentTask:[''],
     startDate:[''],
     endDate:[''],
-    user:[{value: '', disabled: true}]
+    user:['']
 
   });
   constructor(private fb: FormBuilder, 
@@ -44,6 +44,8 @@ export class TaskComponent implements OnInit {
   parentTask: ParentModel =new ParentModel();
   status: string = "NO";
   taskName: string  ="";
+  submitted = false;
+
 /*
 Fetch Project details  ->getAllProjectList
 Set value in text field -> selectedProject
@@ -120,7 +122,9 @@ isParentTask to enable and disable based on checkbox selection
 
     }
   }
+  get f() { return this.addTaskForm.controls; }
   checkTask(){
+  
     const checkBoxValue: Boolean =this.addTaskForm.controls.isParentTask.value;
     if(checkBoxValue){
       this.addParentTask();
@@ -142,6 +146,10 @@ isParentTask to enable and disable based on checkbox selection
   Adding Task in to DB
   */
   addTask(){
+    this.submitted = true;
+    if (this.addTaskForm.invalid) {
+      return;
+  }
     this.task.projectID = this.addTaskForm.controls.project.value;
     this.task.task = this.addTaskForm.controls.task.value;
     this.taskName = this.addTaskForm.controls.task.value;

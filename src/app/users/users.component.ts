@@ -33,10 +33,16 @@ export class UsersComponent implements OnInit {
   userID: string;
   users: any=[];
   enableSort:boolean = false;
+  submitted = false;
+  get f() { return this.addUserForm.controls; }
   /*
   Adding new User --> addUser
   */
   addUser(){
+    this.submitted = true;
+    if (this.addUserForm.invalid) {
+      return;
+  }
     this.user.firstName = this.addUserForm.controls.firstName.value;
     this.firstName = this.addUserForm.controls.firstName.value;
     this.user.lastName = this.addUserForm.controls.lastName.value;
